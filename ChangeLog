@@ -1,0 +1,85 @@
+1998-09-20  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* examples/my-html.pl: fix visit_name subs
+
+	* lib/XML/Parser/Grove.pm (final): return grove
+
+	* examples/grove.pl, examples/iter.pl, examples/my-html.pl,
+	examples/visitor.pl: grove returned from parsefile
+
+	* README: noted Clark Cooper's location for XML::Parser
+
+1998-06-16  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/AsCanonXML.pm (visit_pi): typo: `target', not `name'
+	(_escape): convert whitespace (except space) to entities
+
+1998-05-23  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Iter.pm (at_last, at_first): fix dereferencing
+
+	* lib/XML/Grove.pm (data): remove ISA reference to XML::Document
+
+1998-04-15  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Iter.pm (parent): fixed
+
+1998-04-11  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* release 0.03
+
+	* lib/XML/Grove/Visitor.pm: return results of visits
+
+	* test.pl: added tests for building grove, as_string, and
+	as_canon_xml
+
+	* lib/XML/Grove/Visitor.pm, lib/XML/Grove/Iter.pm: support
+	attribute being only a scalar
+
+	* lib/XML/Grove.pm: note that $element->attr may return a scalar
+
+1998-04-08  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/AsString.pm: rewrote using visitor
+
+	* lib/XML/Grove/AsCanonXML.pm: added
+
+1998-04-05  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* release 0.02
+
+	* README: updated to include `as_string', iter, and visitor
+
+	* XML-Grove.spec (%install): fix cut and paste leftover
+
+1998-04-04  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* XML-Grove.spec (%install): install examples in subdir of docdir
+
+	* examples/README: added
+	* examples/my-html.pl, examples/my-html.html: added
+	* examples/iter.pl: added
+	* examples/visitor.pl: added
+
+	* examples/dump.pl: oops, removed SGML simple-dump leftovers
+	renamed to examples/grove.pl
+
+	* test.pl: added AsString, Iter, Visitor
+	fixed typo in XML::Parser::Grove
+
+	* lib/XML/Grove/Visitor.pm: added
+
+	* lib/XML/Grove.pm (XML::Grove::Comment): added
+	(XML::Grove::Entity::External): added
+
+1998-04-03  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Iter.pm: added
+
+	* lib/XML/Grove/AsString.pm: added
+
+	* lib/XML/Grove.pm: move `as_string' to ::AsString
+
+1998-04-02  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* release 0.01

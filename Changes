@@ -1,0 +1,40 @@
+Revision history for Perl extension XML::Grove.
+
+Backwards incompatible changes are marked with a `*'.
+
+0.04  Sun Sep 20 12:57:06 CDT 1998
+	- Support for Clark Cooper's XML::Parser 2.x
+	* $grove is now returned from $parser->parsefile instead of in
+	  $parser->{Grove}.  $parser->{Grove} is still available when
+	  using XML::Parser 0.0.
+	- fixes
+	  - my-html.pl: fix visit_name subs
+	  - Iter::at_next, Iter::at_first: fixed (had always returned false)
+	  - Iter::parent: now correctly returns parent iterator
+	  - XML::Grove: Grove no longer ISA XML::Document (that's not
+	    supported yet)
+	  - XML::Grove::AsCanonXML: visit_pi had died calling wrong method
+	  - XML::Grove::AsCanonXML: convert tab, nl, and cr to entities
+
+0.03  Sat Apr 11 10:38:59 CDT 1998
+	- XML::Grove::Visitor: returns results as a list
+	- XML::Grove::AsString: rewrote using visitor module
+	- XML::Grove::AsCanonXML: new module
+	- fixes
+	  - $element->attr may return a scalar: updated docs and fixed
+	    Iter and Visitor to match
+
+0.02  Sun Apr  5 12:10:10 CDT 1998
+	- README updated
+	- added examples for Iter and Visitor
+	- XML::Grove::Visitor: new module
+	- XML::Grove::Iter: new module
+	- XML::Grove::AsString: new module
+	- examples/dump.pl: renamed to examples/grove.pl
+	- moved `as_string' to ::AsString
+	- fixes
+	  - examples/grove.pl: removed SGML simple-dump leftovers
+
+0.01  Thu Apr  2 11:58:03 1998
+	- original version; created by h2xs 1.18
+
