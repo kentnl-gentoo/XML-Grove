@@ -1,9 +1,9 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::PerlSAX is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: PerlSAX.pm,v 1.2 1999/08/10 18:45:09 kmacleod Exp $
+# $Id: PerlSAX.pm,v 1.3 1999/08/17 15:01:28 kmacleod Exp $
 #
 
 use strict;

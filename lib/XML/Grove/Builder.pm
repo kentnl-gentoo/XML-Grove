@@ -1,10 +1,10 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::Builder is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
 #
-# $Id: Builder.pm,v 1.4 1999/05/26 15:16:56 kmacleod Exp $
+# $Id: Builder.pm,v 1.5 1999/08/17 15:01:28 kmacleod Exp $
 #
 
 #
@@ -45,25 +45,31 @@ use XML::Grove;
 
 sub new {
     my $type = shift;
+    my $self = ($#_ == 0) ? { %{ (shift) } } : { @_ };
 
-    return bless { @_ }, $type;
+    return bless $self, $type;
 }
 
 sub start_document {
     my $self = shift;
-    $self->{info} = { @_ };
+    my $document = shift;
+
     $self->{lists} = [];
     $self->{cur_list} = [];
-    $self->{Grove} = new XML::Grove::Document (Contents => $self->{cur_list});
+    $self->{Grove} = new XML::Grove::Document (%$document,
+					       Contents => $self->{cur_list});
 }
 
 sub end_document {
     my $self = shift;
+
+    my $grove = $self->{Grove};
+
     delete $self->{cur_list};
     delete $self->{lists};
+    delete $self->{Grove};
 
-    # FIXME cleanup temps
-    return $self->{Grove};
+    return $grove;
 }
 
 sub start_element {
@@ -102,7 +108,7 @@ sub processing_instruction {
 sub record_end {
     my $self = shift;
 
-    push @{ $self->{cur_list} }, "\n";
+    push @{ $self->{cur_list} }, new XML::Grove::Characters (Data => "\n");
 }
 
 sub external_entity_decl {
@@ -208,6 +214,13 @@ sub conforming {
     $self->{Grove}{Conforming} = 1;
 }
 
+sub warning {
+    my $self = shift;
+    my $error = shift;
+
+    push (@{ $self->{Grove}{Errors} }, $error);
+}
+
 sub error {
     my $self = shift;
     my $error = shift;
@@ -215,4 +228,48 @@ sub error {
     push (@{ $self->{Grove}{Errors} }, $error);
 }
 
+sub fatal_error {
+    my $self = shift;
+    my $error = shift;
+
+    push (@{ $self->{Grove}{Errors} }, $error);
+}
+
 1;
+
+__END__
+
+=head1 NAME
+
+XML::Grove::Builder - PerlSAX handler for building an XML::Grove
+
+=head1 SYNOPSIS
+
+ use PerlSAXParser;
+ use XML::Grove::Builder;
+
+ $builder = XML::Grove::Builder->new();
+ $parser = PerlSAXParser->new( Handler => $builder );
+
+ $grove = $parser->parse( Source => [SOURCE] );
+
+=head1 DESCRIPTION
+
+C<XML::Grove::Builder> is a PerlSAX handler for building an XML::Grove.
+
+C<XML::Grove::Builder> is used by creating a new instance of
+C<XML::Grove::Builder> and providing it as the Handler for a PerlSAX
+parser.  Calling `C<parse()>' on the PerlSAX parser will return the
+grove built from that parse.
+
+=head1 AUTHOR
+
+Ken MacLeod, ken@bitsko.slc.ut.us
+
+=head1 SEE ALSO
+
+perl(1), XML::Grove(3), PerlSAX.pod
+
+Extensible Markup Language (XML) <http://www.w3c.org/XML>
+
+=cut

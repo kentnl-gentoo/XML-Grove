@@ -1,9 +1,9 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::AsString is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: AsString.pm,v 1.4 1999/03/06 16:20:07 kmacleod Exp $
+# $Id: AsString.pm,v 1.5 1999/08/17 15:01:28 kmacleod Exp $
 #
 
 use strict;
@@ -12,9 +12,9 @@ package XML::Grove::AsString;
 use Data::Grove::Visitor;
 
 sub new {
-    my ($class, %args) = @_;
+    my $class = shift;
+    my $self = ($#_ == 0) ? { %{ (shift) } } : { @_ };
 
-    my $self = \%args;
     return bless $self, $class;
 }
 
@@ -25,46 +25,6 @@ sub as_string {
 	return ();
     } else {
 	return join('', $object->accept($self, $fh));
-    }
-}
-
-sub filter {
-    my $self = shift;
-    if (@_) {
-	$self->{'filter'} = shift;
-	return $self;
-    } else {
-	return $self->{'filter'};
-    }
-}
-
-sub entity_map {
-    my $self = shift;
-    if (@_) {
-	$self->{'entity_map'} = shift;
-	return $self;
-    } else {
-	return $self->{'entity_map'};
-    }
-}
-
-sub entity_map_options {
-    my $self = shift;
-    if (@_) {
-	$self->{'entity_map_options'} = shift;
-	return $self;
-    } else {
-	return $self->{'entity_map_options'};
-    }
-}
-
-sub entity_map_filter {
-    my $self = shift;
-    if (@_) {
-	$self->{'entity_map_filter'} = shift;
-	return $self;
-    } else {
-	return $self->{'entity_map_filter'};
     }
 }
 
@@ -83,20 +43,20 @@ sub visit_element {
 sub visit_entity {
     my $self = shift; my $entity = shift; my $fh = shift;
 
-    my $mapper = $self->{'entity_map'};
+    my $mapper = $self->{EntityMap};
     return '' if (!defined $mapper);
 
     my $mapping;
     if (ref($mapper) eq 'CODE') {
 	$mapping = &$mapper($entity->{Data},
-			    $self->{'entity_map_options'});
+			    $self->{EntityMapOptions});
     } else {
 	$mapping = $mapper->lookup($entity->{Data},
-				   $self->{'entity_map_options'});
+				   $self->{EntityMapOptions});
     }
 
-    if ($self->{'entity_map_filter'}) {
-	my $filter = $self->{'filter'};
+    if ($self->{EntityMapFilter}) {
+	my $filter = $self->{Filter};
 	if (defined $filter) {
 	    $mapping = &$filter($mapping);
 	}
@@ -117,8 +77,8 @@ sub visit_characters {
     my $self = shift; my $characters = shift; my $fh = shift;
 
     my $data = $characters->{Data};
-    if (defined ($self->{'filter'})) {
-	$data = &{$self->{'filter'}}($data);
+    if (defined ($self->{Filter})) {
+	$data = &{$self->{Filter}}($data);
     }
 
     return $self->_print($fh, $data);
@@ -164,17 +124,12 @@ XML::Grove::AsString - output content of XML objects as a string
 
  use XML::Grove::AsString;
 
+ # Using as_string method on XML::Grove::Document or XML::Grove::Element:
  $string = $xml_object->as_string OPTIONS;
  $string = $element->attr_as_string $attr, OPTIONS;
 
+ # Using an XML::Grove::AsString instance:
  $writer = new XML::Grove::AsString OPTIONS;
-
- # OPTIONS
- $writer->filter([ \&callback ]);
- $writer->entity_map([ \&callback ]);
- $writer->entity_map([ $mapper ]);
- $writer->entity_map_options([ \%options ]);
- $writer->entity_map_filter([ $bool ]);
 
  $string = $writer->as_string($xml_object);
  $writer->as_string($xml_object, $file_handle);
@@ -188,43 +143,46 @@ contents of the named attribute as a string.  Comments, processing
 instructions, and, by default, entities all return an empty string.
 
 I<OPTIONS> may either be a key-value list or a hash containing the
-options described below.  The default options are no filtering and
-entities are mapped to empty strings.
+options described below.  I<OPTIONS> may be modified directly in the
+object.  The default options are no filtering and entities are mapped
+to empty strings.
 
 =head1 OPTIONS
 
-This list summarizes the options available for `C<as_string>':
+=item Filter
 
-    filter => sub to filter character data
-    entity_map => an object or sub to map character entities
-    entity_map_options => options passed to entity_map
-    entity_map_filter => true to use filter on mapped entities
-
-`C<filter>' is an anonymous sub that gets called to process character
+`C<Filter>' is an anonymous sub that gets called to process character
 data before it is appended to the string to be returned.  This can be
 used, for example, to escape characters that are special in output
-formats.  `C<entity_map_filter>' is a flag to indicate if mapped
-entities should be filtered after mapping.  `C<filter>' is called like
-this:
+formats.  The `C<Filter>' sub is called like this:
 
     $string = &$filter ($character_data);
 
-`C<entity_map>' is an object that accepts `C<lookup>' methods or an
+=item EntityMap
+
+`C<EntityMap>' is an object that accepts `C<lookup>' methods or an
 anonymous sub that gets called with the entity replacement text (data)
 and mapper options as arguments and returns the corresponding
-character replacements.  It is called like this:
+character replacements.  It is called like this if it is an object:
 
     $replacement_text = $entity_map->lookup ($entity_data,
 					     $entity_map_options);
 
-or this:
+or this if it is a sub:
 
     $replacement_text = &$entity_map ($entity_data,
 				      $entity_map_options);
 
-`C<entity_map_options>' is passed through to the `C<lookup>' method,
-the type of value is defined by the entity mapping package or the
-anonymous sub.
+=item EntityMapOptions
+
+`C<EntityMapOptions>' is a hash passed through to the `C<lookup>'
+method or anonymous sub, the type of value is defined by the entity
+mapping package or the anonymous sub.
+
+=item EntityMapFilter
+
+`C<EntityMapFilter>' is a flag to indicate if mapped entities should
+be filtered after mapping.
 
 =head1 EXAMPLES
 
@@ -238,7 +196,7 @@ Here is an example of entity mapping using the Text::EntityMap module:
     $html_map = Text::EntityMap->group ($html_iso_dia,
 					$html_iso_pub);
 
-    $element->as_string (entity_map => $html_map);
+    $element->as_string (EntityMap => $html_map);
 
 =head1 AUTHOR
 
@@ -246,7 +204,7 @@ Ken MacLeod, ken@bitsko.slc.ut.us
 
 =head1 SEE ALSO
 
-perl(1), XML::Parser(3), XML::Parser::Grove(3).
+perl(1), XML::Grove(3)
 
 Extensible Markup Language (XML) <http://www.w3c.org/XML>
 

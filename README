@@ -1,4 +1,4 @@
-$Id: README,v 1.10 1999/08/10 21:05:36 kmacleod Exp $
+$Id: README,v 1.11 1999/08/17 15:01:28 kmacleod Exp $
 
 
 			      XML::Grove
@@ -33,7 +33,7 @@ INTRODUCTION
     included in all non-alpha modules and scripts.  You should also be
     able to use the 'perldoc' utility to extract documentation from
     the module files directly.  HTML formatted docs are available at
-    the XML::Grove home page <http://bitsko.slc.ut.us/XML::Grove/>.
+    the XML::Grove home page <http://bitsko.slc.ut.us/XML-Grove/>.
 
     Newer versions of this module can be found on CPAN at
     <http://www.perl.com/CPAN/modules/by-module/XML/>.  To join the

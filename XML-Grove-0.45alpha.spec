@@ -1,8 +1,8 @@
 Summary: Perl module for simple XML objects
 Name: XML-Grove
-Version: 0.44alpha
+Version: 0.45alpha
 Release: 1
-Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.44alpha.tar.gz
+Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.45alpha.tar.gz
 Copyright: distributable
 Group: Applications/Publishing/XML
 URL: http://www.bitsko.slc.ut.us/
@@ -30,7 +30,7 @@ make
 
 make PREFIX="${RPM_ROOT_DIR}/usr" pure_install
 
-DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.44alpha-1"
+DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.45alpha-1"
 mkdir -p "$DOCDIR/examples" "$DOCDIR/t"
 for ii in README COPYING Changes DOM DOM-ecmascript.pod t/* \
     `find examples -type f -print`; do
@@ -40,7 +40,7 @@ done
 
 %files
 
-/usr/doc/XML-Grove-0.44alpha-1
+/usr/doc/XML-Grove-0.45alpha-1
 
 /usr/lib/perl5/XML/Grove/AsCanonXML.pm
 /usr/lib/perl5/XML/Grove/AsString.pm

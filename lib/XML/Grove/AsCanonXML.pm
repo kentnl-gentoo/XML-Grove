@@ -1,9 +1,9 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::AsCanonXML is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: AsCanonXML.pm,v 1.4 1999/03/06 16:20:07 kmacleod Exp $
+# $Id: AsCanonXML.pm,v 1.6 1999/08/17 18:36:20 kmacleod Exp $
 #
 
 use strict;
@@ -23,9 +23,9 @@ use Data::Grove::Visitor;
 );
 
 sub new {
-    my ($class, %args) = @_;
+    my $class = shift;
+    my $self = ($#_ == 0) ? { %{ (shift) } } : { @_ };
 
-    my $self = \%args;
     return bless $self, $class;
 }
 
@@ -36,16 +36,6 @@ sub as_canon_xml {
 	return ();
     } else {
 	return join('', $object->accept($self, $fh));
-    }
-}
-
-sub comments {
-    my $self = shift;
-    if (@_) {
-	$self->{'comments'} = shift;
-	return $self;
-    } else {
-	return $self->{'comments'};
     }
 }
 
@@ -89,7 +79,7 @@ sub visit_pi {
 sub visit_comment {
     my $self = shift; my $comment = shift; my $fh = shift;
 
-    if ($self->{comments}) {
+    if ($self->{Comments}) {
 	return $self->_print($fh, '<!--' . $comment->{Data} . '-->');
     } else {
 	return ();
@@ -140,12 +130,11 @@ XML::Grove::AsCanonXML - output XML objects in canonical XML
 
  use XML::Grove::AsCanonXML;
 
- $string = $xml_object->as_canon_xml OPTIONS;
+ # Using as_canon_xml method on XML::Grove objects:
+ $string = $xml_object->as_canon_xml( OPTIONS );
 
- $writer = new XML::Grove::AsCanonXML OPTIONS;
-
- # OPTIONS
- $writer->comments([$bool]);
+ # Using an XML::Grove::AsCanonXML instance:
+ $writer = XML::Grove::AsCanonXML->new( OPTIONS );
 
  $string = $writer->as_canon_xml($xml_object);
  $writer->as_canon_xml($xml_object, $file_handle);
@@ -159,16 +148,16 @@ C<XML::Grove::AsCanonXML> objects hold the options used for writing
 the XML objects.  Options can be supplied when the the object is
 created,
 
-    $writer = new XML::Grove::AsCanonXML comments => 1;
+    $writer = XML::Grove::AsCanonXML->new( Comments => 1 );
 
-or modified at any time before writing an XML object using the methods
-defined below.
+or modified at any time before writing an XML object by setting the
+option directly in the `C<$writer>' hash.
 
 =head1 OPTIONS
 
 =over 4
 
-=item $writer->comments( [$bool] )
+=item Comments
 
 By default comments are not written to the output.  Setting comment to
 TRUE will include comments in the output.

@@ -1,29 +1,10 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::Path is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
 #
-# $Id: Path.pm,v 1.1 1999/05/26 15:42:16 kmacleod Exp $
+# $Id: Path.pm,v 1.2 1999/08/17 15:01:28 kmacleod Exp $
 #
-
-#
-# Paths are like URLs
-#
-#     /html/body/ul/li[4]
-#     /html/body/#pi[2]
-#
-# The path segments can be element names or object types, the objects
-# types are named, as in XPointers, using:
-#
-#     #element
-#     #pi
-#     #comment
-#     #text
-#     #cdata
-#     #any
-#
-#
-
 
 package XML::Grove::Path;
 
@@ -91,3 +72,61 @@ sub at_path {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+XML::Grove::Path - return the object at a path
+
+=head1 SYNOPSIS
+
+ use XML::Grove::Path;
+
+ # Using at_path method on XML::Grove::Document or XML::Grove::Element:
+ $xml_obj = $grove_object->at_path("/some/path");
+
+ # Using an XML::Grove::Path instance:
+ $pather = XML::Grove::Path->new();
+ $xml_obj = $pather->at_path($grove_object);
+
+=head1 DESCRIPTION
+
+C<XML::Grove::Path> returns XML objects located at paths.  Paths are
+strings of element names or XML object types seperated by slash ("/")
+characters.  Paths must always start at the grove object passed to
+`C<at_path()>'.  C<XML::Grove::Path> is B<not> XPath, but it should
+become obsolete when an XPath implementation is available.
+
+Paths are like URLs
+
+    /html/body/ul/li[4]
+    /html/body/#pi[2]
+
+The path segments can be element names or object types, the objects
+types are named using:
+
+    #element
+    #pi
+    #comment
+    #text
+    #cdata
+    #any
+
+The `C<#any>' object type matches any type of object, it is
+essentially an index into the contents of the parent object.
+
+The `C<#text>' object type treats text objects as if they are not
+normalized.  Two consecutive text objects are seperate text objects.
+
+=head1 AUTHOR
+
+Ken MacLeod, ken@bitsko.slc.ut.us
+
+=head1 SEE ALSO
+
+perl(1), XML::Grove(3)
+
+Extensible Markup Language (XML) <http://www.w3c.org/XML>
+
+=cut

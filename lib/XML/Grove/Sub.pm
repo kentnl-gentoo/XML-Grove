@@ -1,9 +1,9 @@
 #
-# Copyright (C) 1998 Ken MacLeod
+# Copyright (C) 1998, 1999 Ken MacLeod
 # XML::Grove::Sub is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
 #
-# $Id: Sub.pm,v 1.1 1999/05/26 15:42:16 kmacleod Exp $
+# $Id: Sub.pm,v 1.2 1999/08/17 15:01:28 kmacleod Exp $
 #
 
 use strict;
@@ -71,3 +71,58 @@ sub filter {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+XML::Grove::Sub - run a filter sub over a grove
+
+=head1 SYNOPSIS
+
+ use XML::Grove::Sub;
+
+ # Using filter method on XML::Grove::Document or XML::Grove::Element:
+ @results = $grove_object->filter(\&sub [, ...]);
+
+ # Using an XML::Grove::Sub instance:
+ $filterer = XML::Grove::Sub->new();
+ @results = $grove_object->accept($filterer, \&sub [, ...]);
+
+=head1 DESCRIPTION
+
+C<XML::Grove::Sub> executes a sub, the filter, over all objects in a
+grove and returns a list of all the return values from the sub.  The
+sub is called with the grove object as it's first parameter and
+passing the rest of the arguments to the call to `C<filter()>' or
+`C<accept()>'.
+
+=head1 EXAMPLE
+
+The following filter will return a list of all `C<foo>' or `C<bar>'
+elements with an attribute `C<widget-no>' beginning with `C<A>' or
+`C<B>'.
+
+  @results = $grove_obj->filter(sub {
+      my $obj = shift;
+
+      if ($obj->isa('XML::Grove::Element')
+	  && (($obj->{Name} eq 'foo')
+	      || ($obj->{Name} eq 'bar'))
+	  && ($obj->{Attributes}{'widget-no'} =~ /^[AB]/)) {
+	  return ($obj);
+      }
+      return ();
+  });
+
+=head1 AUTHOR
+
+Ken MacLeod, ken@bitsko.slc.ut.us
+
+=head1 SEE ALSO
+
+perl(1), XML::Grove(3), Data::Grove::Visitor(3)
+
+Extensible Markup Language (XML) <http://www.w3c.org/XML>
+
+=cut

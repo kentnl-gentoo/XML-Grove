@@ -3,7 +3,7 @@
 # XML::Grove is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: Grove.pm,v 1.14 1999/05/26 15:16:56 kmacleod Exp $
+# $Id: Grove.pm,v 1.15 1999/08/17 15:01:28 kmacleod Exp $
 #
 
 use strict;
@@ -14,7 +14,7 @@ use Data::Grove;
 package XML::Grove;
 use vars qw{$VERSION @ISA};
 
-$VERSION = '0.44alpha';
+$VERSION = '0.45alpha';
 
 @ISA = qw{Data::Grove};
 
@@ -210,7 +210,7 @@ below and XML::Grove will make available all the properties given by
 the parser, refer to the parser documentation to find out what
 additional properties it may provide.
 
-Although there are not any available yet (May 1999), PerlSAX filters
+Although there are not any available yet (August 1999), PerlSAX filters
 can be used to process the output of a parser before it is passed to
 XML::Grove::Builder.  XML::Grove::PerlSAX can be used to provide input
 to PerlSAX filters or other PerlSAX handlers.

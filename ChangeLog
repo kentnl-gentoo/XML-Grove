@@ -1,3 +1,28 @@
+1999-08-24  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Subst.pm (subst_hash): typo in POD
+
+1999-08-17  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Subst.pm: add POD, add subst() and subst_hash()
+	methods to XML::Grove::Document and XML::Grove::Element
+
+	* lib/XML/Grove/XPointer.pm: deprecated, add POD
+
+	* lib/XML/Grove/Sub.pm, lib/XML/Grove/Path.pm: add POD
+
+1999-08-16  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Builder.pm, lib/XML/Grove/IDs.pm: add POD
+
+	* lib/XML/Grove/AsString.pm: converted to mixed-case options
+	(new): accept key, value pairs or hash
+	(entity_map_filter, entity_map_options, entity_map, filter): removed
+
+	* lib/XML/Grove/AsCanonXML.pm: converted to mixed-case options
+	(new): accept key, value pairs or hash
+	(comments): removed
+
 1999-08-11  Ken MacLeod  <ken@bitsko.slc.ut.us>
 
 	* examples/xml2eml/*: deleted, was dependent on

@@ -7,7 +7,7 @@ MANIFEST
 Makefile.PL
 README
 XML-Grove.spec
-XML-Grove-0.44alpha.spec
+XML-Grove-0.45alpha.spec
 examples/README
 examples/grove.pl
 examples/my-html.html
