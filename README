@@ -1,10 +1,10 @@
-$Id: README,v 1.5 1998/09/20 18:48:00 kmacleod Exp $
+$Id: README,v 1.10 1999/08/10 21:05:36 kmacleod Exp $
 
 
 			      XML::Grove
 
-		   A Perl 5 module providing simple
-		   objects for parsed XML documents.
+	    A Perl 5 module providing simple access to the
+       information set of parsed XML, HTML, or SGML instances.
 
 
                              Ken MacLeod
@@ -12,67 +12,113 @@ $Id: README,v 1.5 1998/09/20 18:48:00 kmacleod Exp $
 
 INTRODUCTION
 
-    XML::Grove provides simple objects for parsed XML documents.  The
-    objects may be modified but no checking is performed by
-    XML::Grove.  XML::Grove objects do not include parsing information
-    such as character positions or type of tags used.
+    XML::Grove provides simple access to the information set of parsed
+    XML, HTML, or SGML instances using a tree of Perl hashes.  This
+    package also includes several extensions to XML::Grove that
+    provide the following:
 
-    This package also includes several extensions to XML::Grove,
-    including `as_string' methods, iterators, and visitor methods
-    (callbacks).
+      * returning element contents as a string
+      * returning element contents as XML, HTML, or Canonical XML
+      * processing entire groves using the visitor pattern
+      * processing entire groves using PerlSAX
+      * running a filter over all nodes in the grove
+      * substituting values into an XML template grove
+      * indexing a grove by ID or other attributes
+      * accessing elements and objects via URL-like paths
+
+    See ``Using XML::Grove'' for an introduction to using XML::Grove.
 
     See the file Changes for user-visible changes.  See the `examples'
-    directory for an example of using XML::Grove.
+    directory for examples of using XML::Grove.  POD documentation is
+    included in all non-alpha modules and scripts.  You should also be
+    able to use the 'perldoc' utility to extract documentation from
+    the module files directly.  HTML formatted docs are available at
+    the XML::Grove home page <http://bitsko.slc.ut.us/XML::Grove/>.
 
-    Newer versions of this module can be found on CPAN or at
-    <ftp://ftp.uu.net/vendor/bitsko/gdo/>.  To join the Perl-XML
-    mailing list, send an email message to ListManager@ActiveState.com
-    with the following text in the body: Subscribe Perl-XML
+    Newer versions of this module can be found on CPAN at
+    <http://www.perl.com/CPAN/modules/by-module/XML/>.  To join the
+    Perl-XML mailing list, send an email message to
+    ListManager@ActiveState.com with the following text in the body:
+    Subscribe Perl-XML
 
-    Copyright (C) 1998 Ken MacLeod
+    Copyright (C) 1998, 1999 Ken MacLeod
     XML::Grove is distributed under the same terms as Perl.
     See the file COPYING for distribution terms.
 
-OVERVIEW
+MODULES
 
-    Groves are generally created by calling a parser or grove building
-    module that returns an XML::Grove object.  The XML::Grove object
-    then contains the root element of the document and may contain
-    errors generated during the parsing or building, entities and
-    notations used within the document, or other parser or grove
-    builder specific information.
+    The following modules are marked with their release status:
 
-    Grove building modules include [for now, just] XML::Parser::Grove.
+    STABLE -- has been in use for a while with few or no outstanding
+              bugs
+    BETA   -- interfaces are stable but there may still be bugs
+    ALPHA  -- interfaces are changing, there may be lots of bugs, and
+              there may not be docs available yet
 
-    Elements of the document are XML::Grove::Element objects.
-    Elements have a name, attributes, and the contents of the element.
-    Attributes are stored as a Perl hash, with the values as an array
-    of scalars and XML::Grove::Entity objects.  The contents of an
-    element may be more Elements, scalars, entity reference objects,
-    processing instruction (PI) objects, or comment objects.
+    XML::Grove                 STABLE
+        Declares all the XML::Grove object classes and provides a
+        `new()' method for basic object creation.
 
-    XML::Grove::AsString adds `as_string' methods to XML::Grove
-    objects to return the character data of the object and any
-    elements contained in the object.  The string may optionally be
-    filtered, have entity references mapped to different replacement
-    text, or written to a file.
+    XML::Grove::Builder        STABLE
+        Builds entires groves from *ML instances using PerlSAX parsers.
 
-    XML::Grove::AsCanonXML adds `as_canon_xml' methods to XML::Grove
-    objects to return a string or write objects to a file in
-    ``Canonical XML'' format.
+    XML::Grove::AsString       STABLE
+        Adds `as_string()' methods to XML::Grove objects to return the
+        character data of the object and any elements contained in the
+        object.  The string may optionally be filtered, have entity
+        references mapped to different replacement text, or written to
+        a file.
 
-    XML::Grove::Iter is a proxy-based tree iterator that supports
-    moving around the objects in the XML document.
+    XML::Grove::AsCanonXML     STABLE
+        Adds `as_canon_xml()' methods to XML::Grove objects to return
+        a string or write objects to a file in ``Canonical XML''
+        format.
 
-    XML::Grove::Visitor adds callback methods to XML objects to give a
-    subroutine interface for your packages.
+    Data::Grove::Visitor       STABLE  (in libxml-perl)
+        Processes or ``walks' an entire grove by making callbacks to a
+        class you define.  Visitor calls your class once for every
+        grove object (no start/end calls), allows arguments to be
+        passed down during the walk, and you can stop any further
+        processing below an element or other container.
+
+    XML::Grove::PerlSAX        STABLE
+        Processes an entire grove by making callbacks to a class you
+        define using the PerlSAX API.  Calls start/end methods for
+        container objects.  PerlSAX can be used to provide input to
+        SAX filters.
+
+    Data::Grove::Parent        STABLE  (in libxml-perl)
+        Adds a Parent property and `root()' and `rootpath()' methods
+        to grove objects.
+
+    XML::Grove::IDs            BETA
+        Return a hash mapping ID or other attributes to the elements
+        where they are defined.
+
+    XML::Grove::Path           BETA
+        Return an object in the grove using URL-like paths, e.g.
+        `/html/head/title'.
+
+    XML::Grove::Sub            BETA
+        Run a sub or filter across all objects in the grove.
+
+    XML::Grove::XPointer       ALPHA
+        Implements a `xp_child()' method on objects that would be used
+        by a more complete XPointer query parser, also used by
+        XML::Grove::Path.
+
+    XML::Grove::ToObjects      OBSOLETE
+        Convert XML to Perl objects via a mapping table.  Replaced by
+        XML::PatAct::ToObjects in libxml-perl.
+
 
 INSTALLATION
 
-    XML::Grove requires Perl 5.  Most likely you will also want to get
-    XML::Parser for reading XML documents.
+    XML::Grove requires Perl 5.005 and libxml-perl.  Most likely you
+    will also want to get XML::Parser for reading XML documents.
+    XML::Parser is available from CPAN:
 
-<http://www.netheaven.com/~coopercc/xmlparser/intro.html>
+<http://www.perl.com/CPAN/modules/by-module/XML/>
 
     XML::Grove installs as a standard Perl module
 

@@ -2,21 +2,22 @@
 # Copyright (C) 1998 Ken MacLeod
 # See the file COPYING for distribution terms.
 #
-# $Id: visitor.pl,v 1.2 1998/09/20 18:48:01 kmacleod Exp $
+# $Id: visitor.pl,v 1.5 1999/05/06 23:13:02 kmacleod Exp $
 #
 
-use XML::Parser;
-use XML::Parser::Grove;
+use XML::Parser::PerlSAX;
 use XML::Grove;
-use XML::Grove::Visitor;
+use XML::Grove::Builder;
+use Data::Grove::Visitor;
 
-my $doc;
-my $parser = XML::Parser->new(Style => 'grove');
+my $builder = XML::Grove::Builder->new;
+my $parser = XML::Parser::PerlSAX->new(Handler => $builder);
 
 my $visitor = new MyVisitor;
 
+my $doc;
 foreach $doc (@ARGV) {
-    my $grove = $parser->parsefile ($doc);
+    my $grove = $parser->parse (Source => { SystemId => $doc} );
 
     my @context;
     $grove->accept ($visitor, \@context);
@@ -30,7 +31,7 @@ sub new {
     return bless {}, $class;
 }
 
-sub visit_grove {
+sub visit_document {
     my $self = shift; my $grove = shift;
 
     $grove->children_accept ($self, @_);
@@ -39,8 +40,8 @@ sub visit_grove {
 sub visit_element {
     my $self = shift; my $element = shift; my $context = shift;
 
-    push @$context, $element->name;
-    my @attributes = %{$element->attributes};
+    push @$context, $element->{Name};
+    my @attributes = %{$element->{Attributes}};
     print STDERR "@$context \\\\ (@attributes)\n";
     $element->children_accept ($self, $context, @_);
     print STDERR "@$context //\n";
@@ -50,15 +51,16 @@ sub visit_element {
 sub visit_pi {
     my $self = shift; my $pi = shift; my $context = shift;
 
-    my $target = $pi->target;
-    my $data = $pi->data;
+    my $target = $pi->{Target};
+    my $data = $pi->{Data};
     print STDERR "@$context ?? $target($data)\n";
 }
 
-sub visit_scalar {
-    my $self = shift; my $scalar = shift; my $context = shift;
+sub visit_characters {
+    my $self = shift; my $characters = shift; my $context = shift;
 
-    $scalar =~ s/([\x80-\xff])/sprintf "#x%X;", ord $1/eg;
-    $scalar =~ s/([\t\n])/sprintf "#%d;", ord $1/eg;
-    print STDERR "@$context || $scalar\n";
+    my $data = $characters->{Data};
+    $data =~ s/([\x80-\xff])/sprintf "#x%X;", ord $1/eg;
+    $data =~ s/([\t\n])/sprintf "#%d;", ord $1/eg;
+    print STDERR "@$context || $data\n";
 }

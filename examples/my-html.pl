@@ -2,7 +2,7 @@
 # Copyright (C) 1997, 1998 Ken MacLeod
 # See the file COPYING for distribution terms.
 #
-# $Id: my-html.pl,v 1.2 1998/09/20 18:48:01 kmacleod Exp $
+# $Id: my-html.pl,v 1.5 1999/05/06 23:13:02 kmacleod Exp $
 #
 
 # `my-html.pl' uses `accept_name' methods to generate calls back using
@@ -11,19 +11,20 @@
 # AUTOLOAD feature is used to pass through any elements we don't
 # handle.
 
-use XML::Parser;
-use XML::Parser::Grove;
+use XML::Parser::PerlSAX;
 use XML::Grove;
-use XML::Grove::Visitor;
+use XML::Grove::Builder;
 use XML::Grove::AsString;
+use Data::Grove::Visitor;
 
 ($prog = $0) =~ s|.*/||g;
 
 die "usage: $prog HTML-DOC\n"
     if ($#ARGV != 0);
 
-my $parser = XML::Parser->new(Style => 'grove');
-my $grove = $parser->parsefile (@ARGV[0]);
+my $builder = XML::Grove::Builder->new;
+my $parser = XML::Parser::PerlSAX->new(Handler => $builder);
+my $grove = $parser->parse (Source => { SystemId => @ARGV[0] });
 
 $grove->accept_name (MyHTML->new);
 
@@ -45,7 +46,7 @@ sub new {
     return bless {}, $class;
 }
 
-sub visit_grove {
+sub visit_document {
     my $self = shift;
     my $grove = shift;
 
@@ -53,7 +54,11 @@ sub visit_grove {
 }
 
 sub visit_element {
-    die "$::prog: visit_element called while using accept_name??\n";
+    my $self = shift;
+    my $element = shift;
+    print "<$element->{Name}>";
+    $element->children_accept_name ($self, @_);
+    print "</$element->{Name}>";
 }
 
 sub visit_entity {
@@ -61,16 +66,17 @@ sub visit_entity {
     my $entity = shift;
 
     warn "is entity?\n";
-    print "&" . $entity->name . ";";
+    print "&" . $entity->{Name} . ";";
 }
 
-sub visit_scalar {
+sub visit_characters {
     my $self = shift;
-    my $scalar = shift;
+    my $characters = shift;
+    my $data = $characters->{Data};
 
     # FIXME do we need to translate special chars here?
-    $scalar =~ tr/\r/\n/;
-    print $scalar;
+    $data =~ tr/\r/\n/;
+    print $data;
 }
 
 ######################################################################
@@ -98,35 +104,6 @@ sub visit_name_PERL {
     eval $perl;
     use strict;
     warn $@ if $@;
-}
-
-######################################################################
-#
-# Everything else
-#
-# See ``perltoot - Tom's object-oriented tutorial for perl''
-# for a discussion of AUTOLOAD
-#   <http://www.perl.com/CPAN/doc/FMTEYEWTK/perltoot.html>
-#
-sub AUTOLOAD {
-    my $self = shift;
-
-    my $type = ref($self)
-	or die "$self is not an object, calling $AUTOLOAD";
-
-    my $name = $AUTOLOAD;
-    # strip fully-qualified portion, returning operator and name
-    my $op;
-    ($op, $name) = ($name =~ /.*::(visit_name_)?(.*)/);
-    
-    die "$::prog: called AUTOLOAD without \`visit_name_': $AUTOLOAD\n"
-	if ($op ne 'visit_name_');
-
-    # FIXME needs to output attributes
-    my $element = shift;
-    print "<$name>";
-    $element->children_accept_name ($self, @_);
-    print "</$name>";
 }
 
 1;

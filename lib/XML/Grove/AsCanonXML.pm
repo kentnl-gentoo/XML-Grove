@@ -3,14 +3,14 @@
 # XML::Grove::AsCanonXML is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: AsCanonXML.pm,v 1.2 1998/09/09 19:05:46 ken Exp $
+# $Id: AsCanonXML.pm,v 1.4 1999/03/06 16:20:07 kmacleod Exp $
 #
 
 use strict;
 
 package XML::Grove::AsCanonXML;
 use vars qw{%char_entities};
-use XML::Grove::Visitor;
+use Data::Grove::Visitor;
 
 %char_entities = (
     "\x09" => '&#9;',
@@ -55,19 +55,13 @@ sub visit_document {
     return $document->children_accept($self, @_);
 }
 
-sub visit_grove {
-    my $self = shift; my $document = shift;
-
-    return $document->children_accept($self, @_);
-}
-
 sub visit_element {
     my $self = shift; my $element = shift; my $fh = shift;
 
     my @return;
-    push @return, $self->_print($fh, '<' . $element->name);
+    push @return, $self->_print($fh, '<' . $element->{Name});
     my $key;
-    my $attrs = $element->attributes;
+    my $attrs = $element->{Attributes};
     foreach $key (sort keys %$attrs) {
 	push @return, $self->_print($fh,
 		      " $key=\"" . $self->_escape($attrs->{$key}) . '"');
@@ -76,7 +70,7 @@ sub visit_element {
 
     push @return, $element->children_accept($self, $fh, @_);
 
-    push @return, $self->_print($fh, '</' . $element->name . '>');
+    push @return, $self->_print($fh, '</' . $element->{Name} . '>');
 
     return @return;
 }
@@ -89,27 +83,23 @@ sub visit_entity {
 sub visit_pi {
     my $self = shift; my $pi = shift; my $fh = shift;
 
-    return $self->_print($fh, '<?' . $pi->target . ' ' . $pi->data . '?>');
+    return $self->_print($fh, '<?' . $pi->{Target} . ' ' . $pi->{Data} . '?>');
 }
 
 sub visit_comment {
     my $self = shift; my $comment = shift; my $fh = shift;
 
     if ($self->{comments}) {
-	return $self->_print($fh, '<!--' . $comment->data . '-->');
+	return $self->_print($fh, '<!--' . $comment->{Data} . '-->');
     } else {
 	return ();
     }
 }
 
-sub visit_scalar {
-    my $self = shift; my $scalar = shift; my $fh = shift;
+sub visit_characters {
+    my $self = shift; my $characters = shift; my $fh = shift;
 
-    if (ref $scalar) {
-	$scalar = $scalar->delegate;
-    }
-
-    return ($self->_print($fh, $self->_escape($scalar)));
+    return ($self->_print($fh, $self->_escape($characters->{Data})));
 }
 
 sub _print {
@@ -130,7 +120,7 @@ sub _escape {
     return $string;
 }
 
-package XML::Grove::_Common;
+package XML::Grove;
 
 sub as_canon_xml {
     my $xml_object = shift;

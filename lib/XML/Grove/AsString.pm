@@ -3,13 +3,13 @@
 # XML::Grove::AsString is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: AsString.pm,v 1.2 1998/04/11 15:42:30 ken Exp $
+# $Id: AsString.pm,v 1.4 1999/03/06 16:20:07 kmacleod Exp $
 #
 
 use strict;
 
 package XML::Grove::AsString;
-use XML::Grove::Visitor;
+use Data::Grove::Visitor;
 
 sub new {
     my ($class, %args) = @_;
@@ -74,12 +74,6 @@ sub visit_document {
     return $document->children_accept($self, @_);
 }
 
-sub visit_grove {
-    my $self = shift; my $document = shift;
-
-    return $document->children_accept($self, @_);
-}
-
 sub visit_element {
     my $self = shift; my $element = shift;
 
@@ -94,10 +88,10 @@ sub visit_entity {
 
     my $mapping;
     if (ref($mapper) eq 'CODE') {
-	$mapping = &$mapper($entity->data,
+	$mapping = &$mapper($entity->{Data},
 			    $self->{'entity_map_options'});
     } else {
-	$mapping = $mapper->lookup($entity->data,
+	$mapping = $mapper->lookup($entity->{Data},
 				   $self->{'entity_map_options'});
     }
 
@@ -119,18 +113,15 @@ sub visit_comment {
     return ();
 }
 
-sub visit_scalar {
-    my $self = shift; my $scalar = shift; my $fh = shift;
+sub visit_characters {
+    my $self = shift; my $characters = shift; my $fh = shift;
 
-    if (ref $scalar) {
-	$scalar = $scalar->delegate;
-    }
-
+    my $data = $characters->{Data};
     if (defined ($self->{'filter'})) {
-	$scalar = &{$self->{'filter'}}($scalar);
+	$data = &{$self->{'filter'}}($data);
     }
 
-    return $self->_print($fh, $scalar);
+    return $self->_print($fh, $data);
 }
 
 sub _print {
@@ -144,7 +135,7 @@ sub _print {
     }
 }
 
-package XML::Grove::_Common;
+package XML::Grove;
 
 sub as_string {
     my $xml_object = shift;

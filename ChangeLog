@@ -1,89 +1,86 @@
-1998-09-21    <kmacleod@chelonia.bigplanet.com>
+1999-08-11  Ken MacLeod  <ken@bitsko.slc.ut.us>
 
-	* test.pl: update to new XML::Parser and correct canonical XML
+	* examples/xml2eml/*: deleted, was dependent on
+	XML::Grove::ToObjects
 
-1998-09-20  Ken MacLeod  <ken@bitsko.slc.ut.us>
+1999-08-10  Ken MacLeod  <ken@bitsko.slc.ut.us>
 
-	* examples/my-html.pl: fix visit_name subs
+	* lib/XML/Grove/ToObjects.pm: deleted, replaced by
+	XML::PatAct::ToObjects
 
-	* lib/XML/Parser/Grove.pm (final): return grove
+	* lib/XML/Grove/PerlSAX.pm (parse): major changes to bring up to
+	spec
 
-	* examples/grove.pl, examples/iter.pl, examples/my-html.pl,
-	examples/visitor.pl: grove returned from parsefile
+1999-05-26  Ken MacLeod  <ken@bitsko.slc.ut.us>
 
-	* README: noted Clark Cooper's location for XML::Parser
+	* MANIFEST, XML-Grove.spec: updated for moved alpha modules
 
-1998-06-16  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* DOM-ecmascript.pod: updated, removed references to Parent
 
-	* lib/XML/Grove/AsCanonXML.pm (visit_pi): typo: `target', not `name'
-	(_escape): convert whitespace (except space) to entities
+	* alpha: removed; moved examples to `examples/' and modules to
+	lib/XML/Grove
 
-1998-05-23  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* DOM: updated, added GetElementsByTagName and Normalize
 
-	* lib/XML/Grove/Iter.pm (at_last, at_first): fix dereferencing
+	* lib/XML/Grove/Builder.pm (end_document): remove call to
+	add_magic
 
-	* lib/XML/Grove.pm (data): remove ISA reference to XML::Document
+	* lib/XML/Grove.pm: major doc update, remove emphasis on
+	Data::Grove::Parent
 
-1998-04-15  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* DOM-ecmascript.pod: renamed occurrences of Perl SAX to PerlSAX
 
-	* lib/XML/Grove/Iter.pm (parent): fixed
+	* lib/XML/Grove/SAX.pm: rename to PerlSAX.pm
 
-1998-04-11  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* README: major update, move alpha modules here
 
-	* release 0.03
+	* alpha/xml2eml/xml2eml.pl: update to PerlSAX
 
-	* lib/XML/Grove/Visitor.pm: return results of visits
+	* alpha/lib/XML/Grove/Subst.pm (visit_element): return Characters
+	object if substitute value is a scalar
 
-	* test.pl: added tests for building grove, as_string, and
-	as_canon_xml
+1999-05-06  Ken MacLeod  <kmacleod@serpentina.terrapinlabs.com>
 
-	* lib/XML/Grove/Visitor.pm, lib/XML/Grove/Iter.pm: support
-	attribute being only a scalar
+	* lib/XML/Grove.pm, t/grove.t: rename SAXPerl to PerlSAX
 
-	* lib/XML/Grove.pm: note that $element->attr may return a scalar
+	* lib/XML/Grove.pm: add $type_name class var to all classes
 
-1998-04-08  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* examples/grove.pl, examples/my-html.pl, examples/visitor.pl:
+	convert to PerlSAX/Grove::Builder
 
-	* lib/XML/Grove/AsString.pm: rewrote using visitor
+1999-04-30  Ken MacLeod  <kmacleod@serpentina.terrapinlabs.com>
 
-	* lib/XML/Grove/AsCanonXML.pm: added
+	* Makefile.PL: added a PREREQ_PM for XML::Parser
 
-1998-04-05  Ken MacLeod  <ken@bitsko.slc.ut.us>
+1999-02-17  Ken MacLeod  <kmacleod@outlaw.cycletime.com>
 
-	* release 0.02
+	* lib/XML/Grove.pm: moved property set methods to
+	libxml/lib/Data/Grove.pm
 
-	* README: updated to include `as_string', iter, and visitor
+	* lib/XML/Grove/Node.pm: moved to libxml/lib/Data/Grove/Tied.pm
 
-	* XML-Grove.spec (%install): fix cut and paste leftover
+	* lib/XML/Grove/Visitor.pm: moved to
+	libxml/lib/Data/Grove/Visitor.pm
 
-1998-04-04  Ken MacLeod  <ken@bitsko.slc.ut.us>
+	* lib/XML/Grove/Visitor.pm: dynamically check visitor to see if
+	will accept callbacks
 
-	* XML-Grove.spec (%install): install examples in subdir of docdir
+1999-02-16  Ken MacLeod  <kmacleod@outlaw.cycletime.com>
 
-	* examples/README: added
-	* examples/my-html.pl, examples/my-html.html: added
-	* examples/iter.pl: added
-	* examples/visitor.pl: added
+	* DOM-ecmascript.pod: added
 
-	* examples/dump.pl: oops, removed SGML simple-dump leftovers
-	renamed to examples/grove.pl
+	* lib/XML/Grove.pm: reformatted using better lists
 
-	* test.pl: added AsString, Iter, Visitor
-	fixed typo in XML::Parser::Grove
+1999-02-15  Ken MacLeod  <kmacleod@outlaw.cycletime.com>
 
-	* lib/XML/Grove/Visitor.pm: added
+	* lib/XML/Grove/Builder.pm: fix several bugs found with
+	ESISParser; move Entities, Notations, AppInfo, and Conforming into
+	XML::Grove::Document object
 
-	* lib/XML/Grove.pm (XML::Grove::Comment): added
-	(XML::Grove::Entity::External): added
+	* lib/XML/Grove.pm: minor doc fixes
 
-1998-04-03  Ken MacLeod  <ken@bitsko.slc.ut.us>
+1999-02-10  Ken MacLeod  <kmacleod@outlaw.cycletime.com>
 
-	* lib/XML/Grove/Iter.pm: added
+	* lib/XML/Grove/Builder.pm (subdoc_start): fix typo in $contents
+	assignment
 
-	* lib/XML/Grove/AsString.pm: added
-
-	* lib/XML/Grove.pm: move `as_string' to ::AsString
-
-1998-04-02  Ken MacLeod  <ken@bitsko.slc.ut.us>
-
-	* release 0.01

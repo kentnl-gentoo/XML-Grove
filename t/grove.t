@@ -8,12 +8,10 @@
 
 BEGIN { $| = 1; print "1..5\n"; }
 END {print "not ok 1\n" unless $loaded;}
-use XML::Parser;
 use XML::Grove;
-use XML::Parser::Grove;
+use XML::Parser::PerlSAX;
+use XML::Grove::Builder;
 use XML::Grove::AsString;
-use XML::Grove::Iter;
-use XML::Grove::Visitor;
 use XML::Grove::AsCanonXML;
 
 $loaded = 1;
@@ -26,8 +24,9 @@ print "ok 1\n";
 # of the test code):
 
 # TEST: grove building
-$p = new XML::Parser Style => 'grove';
-$g = $p->parsestring (<<'EOF');
+$grove_builder = XML::Grove::Builder->new;
+$p = new XML::Parser::PerlSAX Handler => $grove_builder;
+$g = $p->parse (<<'EOF');
 <!DOCTYPE bible [
  <!-- 
   These are unicode character references corresponding to the
@@ -169,5 +168,5 @@ $got = $g->as_string;
 print (($got eq $expected) ? "ok 4\n" : "not ok 4\n");
 
 # TEST: attr_as_string
-$got = $g->root->contents->[1]->contents->[4]->attr_as_string ('id');
+$got = $g->root->{Contents}[1]{Contents}[4]->attr_as_string ('id');
 print (($got eq 'OneKings') ? "ok 5\n" : "not ok 5\n");

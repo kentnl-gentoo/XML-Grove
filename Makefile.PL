@@ -2,7 +2,7 @@
 # Copyright (C) 1998 Ken MacLeod
 # See the file COPYING for distribution terms.
 #
-# $Id: Makefile.PL,v 1.1.1.1 1998/04/02 19:30:20 ken Exp $
+# $Id: Makefile.PL,v 1.2 1999/04/30 18:11:45 kmacleod Exp $
 #
 
 use ExtUtils::MakeMaker;
@@ -12,5 +12,6 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	=> 'XML::Grove',
     'VERSION_FROM' => 'lib/XML/Grove.pm',
+    'PREREQ_PM' => { 'XML::Parser' => '2.19' },
     dist        => {'COMPRESS'  => 'gzip', 'SUFFIX'    => '.gz'},
 );

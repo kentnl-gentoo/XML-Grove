@@ -2,43 +2,70 @@ Revision history for Perl extension XML::Grove.
 
 Backwards incompatible changes are marked with a `*'.
 
-0.05  Thu Sep 24 08:30:43 MDT 1998
-	- fixes
-	  - test.pl wasn't updated for new XML::Parser and failed
+Changes in Version 1.0
 
-0.04  Sun Sep 20 12:57:06 CDT 1998
-	- Support for Clark Cooper's XML::Parser 2.x
-	* $grove is now returned from $parser->parsefile instead of in
-	  $parser->{Grove}.  $parser->{Grove} is still available when
-	  using XML::Parser 0.0.
-	- fixes
-	  - my-html.pl: fix visit_name subs
-	  - Iter::at_next, Iter::at_first: fixed (had always returned false)
-	  - Iter::parent: now correctly returns parent iterator
-	  - XML::Grove: Grove no longer ISA XML::Document (that's not
-	    supported yet)
-	  - XML::Grove::AsCanonXML: visit_pi had died calling wrong method
-	  - XML::Grove::AsCanonXML: convert tab, nl, and cr to entities
+Version 1.0 is virtually a complete rewrite.  The summary below
+presents the changes as a bullet list, but you should probably reread
+the POD docs because they have been updated and should be much clearer
+than before (let me know if you don't think so!).
 
-0.03  Sat Apr 11 10:38:59 CDT 1998
-	- XML::Grove::Visitor: returns results as a list
-	- XML::Grove::AsString: rewrote using visitor module
-	- XML::Grove::AsCanonXML: new module
-	- fixes
-	  - $element->attr may return a scalar: updated docs and fixed
-	    Iter and Visitor to match
 
-0.02  Sun Apr  5 12:10:10 CDT 1998
-	- README updated
-	- added examples for Iter and Visitor
-	- XML::Grove::Visitor: new module
-	- XML::Grove::Iter: new module
-	- XML::Grove::AsString: new module
-	- examples/dump.pl: renamed to examples/grove.pl
-	- moved `as_string' to ::AsString
-	- fixes
-	  - examples/grove.pl: removed SGML simple-dump leftovers
+ * XML::Grove REQUIRES Perl 5.005
 
-0.01  Thu Apr  2 11:58:03 1998
-	- original version; created by h2xs 1.18
+ * The class structure of XML::Grove changes somewhat.
 
+   * XML::Grove::Document now contains the document information where
+     XML::Grove itself used to hold that information.
+
+   * The class XML::Grove is now the common superclass of all classes
+     in the XML::Grove module, and XML::Grove isa Data::Grove (in
+     libxml-perl).
+
+   * Internal class XML::Grove::_Common is gone.
+
+     If you had created extensions to XML::Grove and added methods to
+     XML::Grove::_Common, you should move them to XML::Grove.
+
+ * You now access grove properties directly, i.e.
+
+       $element_name = $element->{Name};
+
+   instead of using methods to access the properties.
+
+ * XML::Grove objects all now appear to have Parent references.
+
+   * This is done using tied hashes and arrays, see Data::Grove::Tied
+     if you see any wierd problems.  Use
+
+         $real_object = $node->{Raw};
+
+     to get the real object behind the tied hash.
+
+ * No More XML::Grove::Iter!!
+
+ * all scalars are now XML::Grove::Characters objects, if you store a
+   scalar value into element content it will be converted to an
+   XML::Grove::Characters object.
+
+ * visit_grove is now visit_document.
+
+ * visit_scalar is now visit_characters.  The object you receive is an
+   XML::Grove::Characters object and $characters->{Data} gives you the
+   text.
+
+ * XML::Grove::Visitor is now Data::Grove::Visitor in libxml-perl
+
+ * Visitor now checks the visitor object for methods it supports and
+   silently ignores undefined methods.  If the visited object has a
+   `Contents' property, Visitor will call `children_accept' or
+   `children_accept_name' if there is no defined method.
+
+ * All properties are mixed case, see XML::Grove(3) and the
+   grove builder and parser man pages for attribute names.
+
+ * FIXME check all places where Iter, visit_scalar, and delegate occur.
+
+ * XML::Parser::Grove is replaced by by using XML::Parser::PerlSAX (in
+   libxml-perl) and XML::Grove::Builder.  See XML::Grove::Builder for usage.
+
+ * added more tests and a `t' directory
