@@ -10,7 +10,7 @@ Packager: ken@bitsko.slc.ut.us (Ken MacLeod)
 BuildRoot: /tmp/XML-Grove
 
 #
-# $Id: XML-Grove.spec,v 1.15 1999/08/11 16:00:11 kmacleod Exp $
+# $Id: XML-Grove.spec,v 1.16 1999/09/03 21:41:00 kmacleod Exp $
 #
 
 %description
@@ -45,6 +45,7 @@ done
 /usr/lib/perl5/XML/Grove/AsCanonXML.pm
 /usr/lib/perl5/XML/Grove/AsString.pm
 /usr/lib/perl5/XML/Grove/Builder.pm
+/usr/lib/perl5/XML/Grove/Factory.pm
 /usr/lib/perl5/XML/Grove/IDs.pm
 /usr/lib/perl5/XML/Grove/Path.pm
 /usr/lib/perl5/XML/Grove/PerlSAX.pm
@@ -56,6 +57,7 @@ done
 /usr/lib/perl5/man/man3/XML::Grove::AsCanonXML.3
 /usr/lib/perl5/man/man3/XML::Grove::AsString.3
 /usr/lib/perl5/man/man3/XML::Grove::Builder.3
+/usr/lib/perl5/man/man3/XML::Grove::Factory.3
 /usr/lib/perl5/man/man3/XML::Grove::IDs.3
 /usr/lib/perl5/man/man3/XML::Grove::Path.3
 /usr/lib/perl5/man/man3/XML::Grove::PerlSAX.3

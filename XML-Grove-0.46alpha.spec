@@ -1,8 +1,8 @@
 Summary: Perl module for simple XML objects
 Name: XML-Grove
-Version: 0.45alpha
+Version: 0.46alpha
 Release: 1
-Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.45alpha.tar.gz
+Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.46alpha.tar.gz
 Copyright: distributable
 Group: Applications/Publishing/XML
 URL: http://www.bitsko.slc.ut.us/
@@ -10,7 +10,7 @@ Packager: ken@bitsko.slc.ut.us (Ken MacLeod)
 BuildRoot: /tmp/XML-Grove
 
 #
-# $Id: XML-Grove.spec,v 1.15 1999/08/11 16:00:11 kmacleod Exp $
+# $Id: XML-Grove.spec,v 1.16 1999/09/03 21:41:00 kmacleod Exp $
 #
 
 %description
@@ -30,7 +30,7 @@ make
 
 make PREFIX="${RPM_ROOT_DIR}/usr" pure_install
 
-DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.45alpha-1"
+DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.46alpha-1"
 mkdir -p "$DOCDIR/examples" "$DOCDIR/t"
 for ii in README COPYING Changes DOM DOM-ecmascript.pod t/* \
     `find examples -type f -print`; do
@@ -40,11 +40,12 @@ done
 
 %files
 
-/usr/doc/XML-Grove-0.45alpha-1
+/usr/doc/XML-Grove-0.46alpha-1
 
 /usr/lib/perl5/XML/Grove/AsCanonXML.pm
 /usr/lib/perl5/XML/Grove/AsString.pm
 /usr/lib/perl5/XML/Grove/Builder.pm
+/usr/lib/perl5/XML/Grove/Factory.pm
 /usr/lib/perl5/XML/Grove/IDs.pm
 /usr/lib/perl5/XML/Grove/Path.pm
 /usr/lib/perl5/XML/Grove/PerlSAX.pm
@@ -56,6 +57,7 @@ done
 /usr/lib/perl5/man/man3/XML::Grove::AsCanonXML.3
 /usr/lib/perl5/man/man3/XML::Grove::AsString.3
 /usr/lib/perl5/man/man3/XML::Grove::Builder.3
+/usr/lib/perl5/man/man3/XML::Grove::Factory.3
 /usr/lib/perl5/man/man3/XML::Grove::IDs.3
 /usr/lib/perl5/man/man3/XML::Grove::Path.3
 /usr/lib/perl5/man/man3/XML::Grove::PerlSAX.3

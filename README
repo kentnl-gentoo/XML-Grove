@@ -1,4 +1,4 @@
-$Id: README,v 1.11 1999/08/17 15:01:28 kmacleod Exp $
+$Id: README,v 1.12 1999/09/03 21:41:00 kmacleod Exp $
 
 
 			      XML::Grove
@@ -25,6 +25,7 @@ INTRODUCTION
       * substituting values into an XML template grove
       * indexing a grove by ID or other attributes
       * accessing elements and objects via URL-like paths
+      * create grove objects using an easy shorthand
 
     See ``Using XML::Grove'' for an introduction to using XML::Grove.
 
@@ -91,6 +92,10 @@ MODULES
         Adds a Parent property and `root()' and `rootpath()' methods
         to grove objects.
 
+    XML::Grove::Factory        BETA
+        Provides objects and functions to easily create groves
+        directly from Perl.
+
     XML::Grove::IDs            BETA
         Return a hash mapping ID or other attributes to the elements
         where they are defined.
@@ -102,10 +107,9 @@ MODULES
     XML::Grove::Sub            BETA
         Run a sub or filter across all objects in the grove.
 
-    XML::Grove::XPointer       ALPHA
-        Implements a `xp_child()' method on objects that would be used
-        by a more complete XPointer query parser, also used by
-        XML::Grove::Path.
+    XML::Grove::XPointer       DEPRECATED
+        Implements a `xp_child()' method used by XML::Grove::Path.
+        Does _not_ implement any current XPointer features.
 
     XML::Grove::ToObjects      OBSOLETE
         Convert XML to Perl objects via a mapping table.  Replaced by

@@ -1,4 +1,19 @@
+1999-09-03  Ken MacLeod  <ken@jess>
+
+	* t/factory.t: added
+
+	* lib/XML/Grove/Factory.pm: added
+
+1999-09-01  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/Sub.pm (visit_document): changed $grove to
+	$document
+
 1999-08-24  Ken MacLeod  <ken@bitsko.slc.ut.us>
+
+	* lib/XML/Grove/AsString.pm (attr_as_string): missing =over/=back
+
+	* release 0.45alpha
 
 	* lib/XML/Grove/Subst.pm (subst_hash): typo in POD
 

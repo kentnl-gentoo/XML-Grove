@@ -3,7 +3,7 @@
 # XML::Grove::AsString is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: AsString.pm,v 1.5 1999/08/17 15:01:28 kmacleod Exp $
+# $Id: AsString.pm,v 1.6 1999/08/25 17:08:09 kmacleod Exp $
 #
 
 use strict;
@@ -149,6 +149,8 @@ to empty strings.
 
 =head1 OPTIONS
 
+=over 4
+
 =item Filter
 
 `C<Filter>' is an anonymous sub that gets called to process character
@@ -183,6 +185,8 @@ mapping package or the anonymous sub.
 
 `C<EntityMapFilter>' is a flag to indicate if mapped entities should
 be filtered after mapping.
+
+=back
 
 =head1 EXAMPLES
 

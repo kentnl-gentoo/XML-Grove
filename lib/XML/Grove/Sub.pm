@@ -3,7 +3,7 @@
 # XML::Grove::Sub is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
 #
-# $Id: Sub.pm,v 1.2 1999/08/17 15:01:28 kmacleod Exp $
+# $Id: Sub.pm,v 1.3 1999/09/02 20:56:58 kmacleod Exp $
 #
 
 use strict;
@@ -20,7 +20,7 @@ sub new {
 sub visit_document {
     my $self = shift; my $document = shift; my $sub = shift;
     return (&$sub($document, @_),
-	    $grove->children_accept ($self, $sub, @_));
+	    $document->children_accept ($self, $sub, @_));
 }
 
 sub visit_element {
