@@ -5,7 +5,7 @@ MANIFEST
 Makefile.PL
 README
 XML-Grove.spec
-XML-Grove-0.04.spec
+XML-Grove-0.05.spec
 examples/README
 examples/grove.pl
 examples/iter.pl

@@ -1,3 +1,7 @@
+1998-09-21    <kmacleod@chelonia.bigplanet.com>
+
+	* test.pl: update to new XML::Parser and correct canonical XML
+
 1998-09-20  Ken MacLeod  <ken@bitsko.slc.ut.us>
 
 	* examples/my-html.pl: fix visit_name subs

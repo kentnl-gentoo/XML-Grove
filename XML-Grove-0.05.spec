@@ -1,8 +1,8 @@
 Summary: Perl module for simple, non-validating XML objects
 Name: XML-Grove
-Version: 0.04
+Version: 0.05
 Release: 1
-Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.04.tar.gz
+Source: ftp://ftp.uu.net/vendor/bitsko/gdo/XML-Grove-0.05.tar.gz
 Copyright: distributable
 Group: Applications/Publishing/XML
 URL: http://www.bitsko.slc.ut.us/
@@ -32,7 +32,7 @@ make
 
 make PREFIX="${RPM_ROOT_DIR}/usr" pure_install
 
-DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.04-1"
+DOCDIR="${RPM_ROOT_DIR}/usr/doc/XML-Grove-0.05-1"
 mkdir -p "$DOCDIR/examples"
 for ii in README COPYING Changes test.pl examples/*; do
   cp $ii "$DOCDIR/$ii"
@@ -41,7 +41,7 @@ done
 
 %files
 
-/usr/doc/XML-Grove-0.04-1
+/usr/doc/XML-Grove-0.05-1
 
 /usr/lib/perl5/XML/Grove/AsString.pm
 /usr/lib/perl5/XML/Grove/AsCanonXML.pm

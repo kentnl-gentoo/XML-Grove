@@ -27,7 +27,7 @@ print "ok 1\n";
 
 # TEST: grove building
 $p = new XML::Parser Style => 'grove';
-$p->parsestring (<<'EOF');
+$g = $p->parsestring (<<'EOF');
 <!DOCTYPE bible [
  <!-- 
   These are unicode character references corresponding to the
@@ -103,58 +103,11 @@ behold, then an angel touched him, and said unto him, Arise <i>and</i> eat.
 ...
 </bible>
 EOF
-$g = $p->{Grove};
 print "ok 2\n";
 
 # TEST: as_cannon_xml
 $expected = <<'EOF';
-<bible>
-<testament><title>The Old Testament</title>
-...
-<book id="OneKings"> 
-<title>The First Book of the Kings</title>
-<subtitle>Commonly called The Third Book of the Kings</subtitle>
-...
-<chapter num="19">
-<narrative>Jezebel threatens Elijah</narrative>
-<verse dotted="true" num="1">And Āʹhăb told Jĕzʹe-bĕl
-all that E˔-līʹjah had done, and withal how he had slain all the prophets with
-the sword.
-<xref c="18" v="40"></xref></verse>
-<verse dotted="true" num="2">Then Jĕzʹe-bĕl sent a messenger unto E˔-līʹjah,
-saying, So let the gods do <i>to me</i>, and more also, if I make not thy life
-as the life of one of them by to morrow about this time.
-<xref b="Ru" c="1" v="17"></xref>
-<xref c="2" v="23"></xref>
-<xref c="27" n="Pr" v="1"></xref>
-</verse>
-<verse dotted="false" num="3">And when he saw <i>that</i>, he arose, and went
-for his life, and came to Bēʹer-shēʹbȧ, which <i>belongeth</i> to
-Jūʹdah, and left his servant there.</verse>
-<verse dotted="true" num="4">¶ But he himself went a day's journey
-into the wilderness, and came and sat down under a juniper tree: and he
-requested for himself that he might die; and said, It is enough; now, O L<smallcaps>ORD</smallcaps>,
-take away my life; for I <i>am</i> not better than my fathers.
-<xref b="Nu" c="11" v="15"></xref>
-<xref b="Jon" c="4" v="3,8"></xref>
-<xref b="Ph" c="1" v="21-24"></xref>
-<footnote>for himself, or for his life</footnote>
-</verse>
-<narrative>An angel ministers to him</narrative>
-<verse dotted="true" num="5">And as he lay and slept under a juniper tree,
-behold, then an angel touched him, and said unto him, Arise <i>and</i> eat.
-<xref b="Ps" c="34" v="7"></xref>
-<xref b="Ac" c="12" v="7"></xref>
-<xref b="Heb" c="1" v="14"></xref>
-</verse>
-...
-</chapter>
-...
-</book>
-...
-</testament>
-...
-</bible>
+<bible>&#10;<testament><title>The Old Testament</title>&#10;...&#10;<book id="OneKings"> &#10;<title>The First Book of the Kings</title>&#10;<subtitle>Commonly called The Third Book of the Kings</subtitle>&#10;...&#10;<chapter num="19">&#10;<narrative>Jezebel threatens Elijah</narrative>&#10;<verse dotted="true" num="1">And Āʹhăb told Jĕzʹe-bĕl&#10;all that E˔-līʹjah had done, and withal how he had slain all the prophets with&#10;the sword.&#10;<xref c="18" v="40"></xref></verse>&#10;<verse dotted="true" num="2">Then Jĕzʹe-bĕl sent a messenger unto E˔-līʹjah,&#10;saying, So let the gods do <i>to me</i>, and more also, if I make not thy life&#10;as the life of one of them by to morrow about this time.&#10;<xref b="Ru" c="1" v="17"></xref>&#10;<xref c="2" v="23"></xref>&#10;<xref c="27" n="Pr" v="1"></xref>&#10;</verse>&#10;<verse dotted="false" num="3">And when he saw <i>that</i>, he arose, and went&#10;for his life, and came to Bēʹer-shēʹbȧ, which <i>belongeth</i> to&#10;Jūʹdah, and left his servant there.</verse>&#10;<verse dotted="true" num="4">¶ But he himself went a day's journey&#10;into the wilderness, and came and sat down under a juniper tree: and he&#10;requested for himself that he might die; and said, It is enough; now, O L<smallcaps>ORD</smallcaps>,&#10;take away my life; for I <i>am</i> not better than my fathers.&#10;<xref b="Nu" c="11" v="15"></xref>&#10;<xref b="Jon" c="4" v="3,8"></xref>&#10;<xref b="Ph" c="1" v="21-24"></xref>&#10;<footnote>for himself, or for his life</footnote>&#10;</verse>&#10;<narrative>An angel ministers to him</narrative>&#10;<verse dotted="true" num="5">And as he lay and slept under a juniper tree,&#10;behold, then an angel touched him, and said unto him, Arise <i>and</i> eat.&#10;<xref b="Ps" c="34" v="7"></xref>&#10;<xref b="Ac" c="12" v="7"></xref>&#10;<xref b="Heb" c="1" v="14"></xref>&#10;</verse>&#10;...&#10;</chapter>&#10;...&#10;</book>&#10;...&#10;</testament>&#10;...&#10;</bible>
 EOF
 chop ($expected);
 $got = $g->as_canon_xml;

@@ -2,6 +2,10 @@ Revision history for Perl extension XML::Grove.
 
 Backwards incompatible changes are marked with a `*'.
 
+0.05  Thu Sep 24 08:30:43 MDT 1998
+	- fixes
+	  - test.pl wasn't updated for new XML::Parser and failed
+
 0.04  Sun Sep 20 12:57:06 CDT 1998
 	- Support for Clark Cooper's XML::Parser 2.x
 	* $grove is now returned from $parser->parsefile instead of in

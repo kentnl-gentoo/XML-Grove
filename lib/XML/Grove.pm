@@ -34,7 +34,7 @@ sub new {
 package XML::Grove;
 use vars qw{@ISA $VERSION};
 @ISA = qw{XML::Grove::_Common};
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 sub root {
     my $self = shift;
