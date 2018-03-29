@@ -14,7 +14,8 @@ use Data::Grove;
 package XML::Grove;
 use vars qw{$VERSION @ISA};
 
-$VERSION = '0.46alpha';
+$VERSION = '0.46_00';
+$VERSION =~ tr/_//d;
 
 @ISA = qw{Data::Grove};
 
